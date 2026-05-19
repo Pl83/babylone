@@ -6,14 +6,18 @@
 	import { encrypt as fibEncrypt, decrypt as fibDecrypt } from '$lib/ciphers/fibonacci';
 	import { encrypt as vernamEncrypt, decrypt as vernamDecrypt } from '$lib/ciphers/vernam';
 	import { encrypt as binaryEncrypt, decrypt as binaryDecrypt } from '$lib/ciphers/binary';
+	import { encrypt as railFenceEncrypt, decrypt as railFenceDecrypt } from '$lib/ciphers/railfence';
+	import PigpenForm from '$lib/components/PigpenForm.svelte';
 
 	const tabs = [
 		{ id: 'Morse', label: 'Morse' },
-		{ id: 'Cesar', label: 'César' },
-		{ id: 'Vigener', label: 'Vigener' },
-		{ id: 'Fibonaci', label: 'Fibonaci' },
+		{ id: 'Cesar', label: 'Caesar' },
+		{ id: 'Vigener', label: 'Vigenère' },
+		{ id: 'Fibonaci', label: 'Fibonacci' },
 		{ id: 'Vernam', label: 'Vernam' },
-		{ id: 'Binaire', label: 'Binaire' }
+		{ id: 'Binaire', label: 'Binary' },
+		{ id: 'RailFence', label: 'Rail Fence' },
+		{ id: 'Pigpen', label: 'Pigpen' }
 	];
 
 	let activeTab = $state('Morse');
@@ -26,13 +30,13 @@
 <header>
 	<div>
 		<h1>Verba Enigma</h1>
-		<p>Cryptage &amp; Décryptage</p>
+		<p>Encryption &amp; Decryption</p>
 	</div>
 </header>
 
 <main>
-	<h2>Bienvenue sur Verba Enigma</h2>
-	<p>Plongez dans l'univers fascinant de la cryptologie, où secrets et énigmes s'entrelacent. Ce site pédagogique et ludique vous invite à explorer les techniques de cryptage classiques, des messages codés en Morse aux subtilités du chiffre de Vigenère, en passant par le binaire et des méthodes originales comme le décalage basé sur la suite de Fibonacci. Chaque outil est accompagné d'explications sur son origine, son fonctionnement et ses usages, pour vous initier à l'art du cryptage tout en vous amusant. Que vous soyez curieux, étudiant ou passionné, Verba Enigma est votre portail vers le monde des codes et des mystères.</p>
+	<h2>Welcome to Verba Enigma</h2>
+	<p>Dive into the fascinating world of cryptology, where secrets and enigmas intertwine. This educational and playful site invites you to explore classical encryption techniques, from messages coded in Morse to the subtleties of the Vigenère cipher, through binary and original methods such as shift encoding based on the Fibonacci sequence. Each tool is accompanied by explanations of its origin, how it works, and its uses, to initiate you into the art of encryption while having fun. Whether you are curious, a student, or an enthusiast, Verba Enigma is your portal to the world of codes and mysteries.</p>
 
 	<div class="tab">
 		{#each tabs as tab}
@@ -48,17 +52,17 @@
 
 	{#if activeTab === 'Morse'}
 		<section class="tabcontent">
-			<h2>Le Morse</h2>
-			<h3>Origine</h3>
-			<p>Le code Morse est un système de communication inventé par Samuel Morse et son collaborateur Alfred Vail dans les années 1830 et 1840, en vue de faciliter la transmission de messages à travers le télégraphe électrique. Avant l'invention du téléphone, ce système représentait une avancée majeure en permettant une communication rapide sur de longues distances. À l'origine, Samuel Morse voulait un code simple qui puisse être transmis par des impulsions électriques, ces dernières étant facilement interprétables comme des "bips".</p>
+			<h2>Morse Code</h2>
+			<h3>Origin</h3>
+			<p>Morse code is a communication system invented by Samuel Morse and his collaborator Alfred Vail in the 1830s and 1840s, designed to facilitate the transmission of messages over the electric telegraph. Before the invention of the telephone, this system represented a major breakthrough by enabling rapid communication over long distances. Originally, Samuel Morse wanted a simple code that could be transmitted via electrical pulses, which could easily be interpreted as "beeps".</p>
 			<section>
 				<div>
-					<h3>Fonctionnement</h3>
-					<p>Le code Morse repose sur une série de signaux courts et longs, appelés points et traits, pour représenter les lettres de l'alphabet, les chiffres et certains caractères spéciaux. Un point est un signal court, tandis qu'un trait est un signal long. Ces signaux sont séparés par des pauses pour former les caractères, et des pauses plus longues séparent les mots. Par exemple, la lettre "S" est représentée par trois points (•••), tandis que la lettre "O" est formée par trois traits (–––), donnant ainsi "SOS" pour les messages d'urgence.</p>
+					<h3>How It Works</h3>
+					<p>Morse code relies on a series of short and long signals, called dots and dashes, to represent the letters of the alphabet, digits, and certain special characters. A dot is a short signal, while a dash is a long signal. These signals are separated by pauses to form characters, and longer pauses separate words. For example, the letter "S" is represented by three dots (•••), while the letter "O" is formed by three dashes (–––), giving "SOS" for emergency messages.</p>
 				</div>
 				<div>
-					<h3>Applications Pratiques</h3>
-					<p>Le code Morse a longtemps été essentiel pour la télégraphie, puis pour les communications radio dans le milieu maritime et aéronautique. Il reste encore utilisé aujourd'hui pour certaines applications, notamment dans le domaine du sauvetage en mer, où le célèbre signal "SOS" (••• ––– •••) est universellement reconnu. De plus, il est utilisé pour l'apprentissage des transmissions codées dans certaines armées et pour les communications d'urgence, car il peut être transmis par diverses méthodes : signaux lumineux, sons, ou même gestes, permettant une communication dans des situations où d'autres systèmes seraient inefficaces. Le code Morse demeure ainsi un outil simple mais puissant, à la fois dans l'histoire des télécommunications et dans certains usages contemporains de communication de secours.</p>
+					<h3>Practical Applications</h3>
+					<p>Morse code was long essential for telegraphy, then for radio communications in maritime and aeronautical contexts. It is still used today in certain applications, particularly in maritime rescue, where the famous "SOS" signal (••• ––– •••) is universally recognised. It is also used for training in coded transmissions in some armies and for emergency communications, as it can be transmitted by various methods: light signals, sounds, or even gestures, enabling communication in situations where other systems would be ineffective. Morse code thus remains a simple yet powerful tool, both in the history of telecommunications and in certain contemporary emergency communication uses.</p>
 				</div>
 			</section>
 			<br />
@@ -70,17 +74,17 @@
 
 	{#if activeTab === 'Cesar'}
 		<section class="tabcontent">
-			<h2>Le Chiffre de César</h2>
-			<h3>Origine</h3>
-			<p>Le chiffre de César, aussi connu sous le nom de chiffrement par décalage, est une méthode de cryptographie simple attribuée à Jules César, qui l'aurait utilisée pour transmettre des messages confidentiels. Cette technique remonte à l'époque romaine, ce qui en fait l'un des systèmes de chiffrement les plus anciens connus. Malgré sa simplicité, il a marqué un tournant dans l'histoire de la cryptographie en introduisant l'idée de substitution systématique.</p>
+			<h2>The Caesar Cipher</h2>
+			<h3>Origin</h3>
+			<p>The Caesar cipher, also known as the shift cipher, is a simple cryptographic method attributed to Julius Caesar, who is said to have used it to transmit confidential messages. This technique dates back to the Roman era, making it one of the oldest known encryption systems. Despite its simplicity, it marked a turning point in the history of cryptography by introducing the idea of systematic substitution.</p>
 			<section>
 				<div>
-					<h3>Fonctionnement</h3>
-					<p>Le chiffre de César repose sur le principe du décalage des lettres de l'alphabet. La clé est un nombre qui indique de combien de positions chaque lettre du message clair sera décalée. Par exemple, avec une clé de 3, la lettre "A" devient "D", "B" devient "E", et ainsi de suite. Chaque lettre du message est remplacée par une lettre située un certain nombre de places plus loin dans l'alphabet, selon la clé. À la fin de l'alphabet, on revient au début (ce qui fait du chiffrement un système circulaire). Le processus inverse consiste à reculer chaque lettre du même nombre de positions pour retrouver le texte original. Par exemple, avec une clé de 3, le mot "CHAT" devient "FKDW". Pour le déchiffrer, il suffit de reculer chaque lettre de 3 positions.</p>
+					<h3>How It Works</h3>
+					<p>The Caesar cipher relies on the principle of shifting letters of the alphabet. The key is a number that indicates by how many positions each letter of the plaintext will be shifted. For example, with a key of 3, the letter "A" becomes "D", "B" becomes "E", and so on. Each letter of the message is replaced by a letter located a certain number of places further in the alphabet, according to the key. At the end of the alphabet, it wraps back to the beginning (making the cipher a circular system). The reverse process consists of moving each letter back by the same number of positions to recover the original text. For example, with a key of 3, the word "CHAT" becomes "FKDW". To decrypt it, simply move each letter back 3 positions.</p>
 				</div>
 				<div>
-					<h3>Applications Pratiques</h3>
-					<p>À l'époque de Jules César, ce chiffrement était utilisé pour protéger des communications militaires. Bien que ce système soit extrêmement simple et facile à casser aujourd'hui avec des outils modernes comme l'analyse de fréquences, il reste un excellent point de départ pour comprendre les concepts fondamentaux de la cryptographie. De nos jours, le chiffre de César est principalement utilisé à des fins pédagogiques pour illustrer les bases du chiffrement par substitution. Il est également parfois employé dans des énigmes, des jeux ou pour des messages codés de manière ludique. Le chiffre de César, bien que rudimentaire, est un exemple emblématique de l'ingéniosité humaine dans la quête de confidentialité des communications. Il ouvre la voie à des méthodes de cryptographie plus complexes et sophistiquées.</p>
+					<h3>Practical Applications</h3>
+					<p>In Julius Caesar's time, this cipher was used to protect military communications. Although this system is extremely simple and easy to break today with modern tools such as frequency analysis, it remains an excellent starting point for understanding the fundamental concepts of cryptography. Today, the Caesar cipher is mainly used for educational purposes to illustrate the basics of substitution ciphers. It is also sometimes used in puzzles, games, or for coded messages in a playful way. The Caesar cipher, though rudimentary, is an emblematic example of human ingenuity in the quest for communication privacy. It paves the way for more complex and sophisticated cryptographic methods.</p>
 				</div>
 			</section>
 			<br />
@@ -91,8 +95,8 @@
 				decryptFn={(text, key) => cesarDecrypt(text, parseInt(key ?? '3'))}
 				needsEncryptKey={true}
 				needsDecryptKey={true}
-				encryptKeyLabel="Décalage (nombre)"
-				decryptKeyLabel="Décalage (nombre)"
+				encryptKeyLabel="Shift (number)"
+				decryptKeyLabel="Shift (number)"
 				encryptKeyType="number"
 				decryptKeyType="number"
 			/>
@@ -101,17 +105,17 @@
 
 	{#if activeTab === 'Vigener'}
 		<section class="tabcontent">
-			<h2>Le Chiffre de Vigenère</h2>
-			<h3>Origine</h3>
-			<p>Le chiffre de Vigenère est une méthode de cryptographie classique développée au XVIe siècle par le diplomate français Blaise de Vigenère. Cette technique, considérée comme une amélioration du chiffre de César, était révolutionnaire pour son époque, car elle rendait les messages codés beaucoup plus difficiles à déchiffrer sans la clé appropriée. Elle a longtemps été surnommée "chiffre indéchiffrable" avant que des méthodes d'analyse cryptographique plus avancées n'émergent.</p>
+			<h2>The Vigenère Cipher</h2>
+			<h3>Origin</h3>
+			<p>The Vigenère cipher is a classical cryptographic method developed in the 16th century by French diplomat Blaise de Vigenère. This technique, considered an improvement on the Caesar cipher, was revolutionary for its time, as it made coded messages much harder to decipher without the appropriate key. It was long nicknamed the "unbreakable cipher" before more advanced cryptanalytic methods emerged.</p>
 			<section>
 				<div>
-					<h3>Fonctionnement</h3>
-					<p>Le chiffre de Vigenère repose sur une clé, qui est un mot ou une phrase, et utilise une table appelée tableau de Vigenère. Ce tableau est une grille alphabétique où chaque ligne représente une version décalée de l'alphabet. La clé est répétée autant de fois que nécessaire pour correspondre à la longueur du message à chiffrer. Chaque lettre du message est décalée dans l'alphabet en fonction de la lettre correspondante de la clé. Par exemple, si la clé est "BAC", le décalage pour la première lettre sera de 1 (B étant la deuxième lettre de l'alphabet), pour la deuxième de 0 (A = aucun décalage), et pour la troisième de 2 (C = troisième lettre). Le processus inverse est utilisé pour retrouver le message original, en connaissant la clé.</p>
+					<h3>How It Works</h3>
+					<p>The Vigenère cipher relies on a key, which is a word or phrase, and uses a table called the Vigenère square. This table is an alphabetical grid where each row represents a shifted version of the alphabet. The key is repeated as many times as needed to match the length of the message to be encrypted. Each letter of the message is shifted in the alphabet according to the corresponding letter of the key. For example, if the key is "BAC", the shift for the first letter will be 1 (B being the second letter of the alphabet), for the second it will be 0 (A = no shift), and for the third it will be 2 (C = third letter). The reverse process is used to recover the original message, given knowledge of the key.</p>
 				</div>
 				<div>
-					<h3>Applications Pratiques</h3>
-					<p>Le chiffre de Vigenère a été largement utilisé entre le XVIe et le XIXe siècle, notamment dans les correspondances militaires et diplomatiques. Sa simplicité et sa relative sécurité en faisaient un choix populaire avant l'arrivée des machines de cryptographie, comme l'Enigma. Bien que ce chiffre soit désormais vulnérable aux attaques cryptographiques modernes, comme l'analyse de fréquences, il reste un outil éducatif important pour apprendre les bases de la cryptographie et des chiffres polyalphabétiques. Par ailleurs, des variantes modernes basées sur le même principe sont utilisées dans des systèmes de sécurité informatique pour des tâches moins sensibles. Le chiffre de Vigenère illustre à merveille l'évolution de la cryptographie et son importance dans la protection des informations sensibles à travers les siècles.</p>
+					<h3>Practical Applications</h3>
+					<p>The Vigenère cipher was widely used between the 16th and 19th centuries, particularly in military and diplomatic correspondence. Its simplicity and relative security made it a popular choice before the advent of cryptographic machines such as Enigma. Although this cipher is now vulnerable to modern cryptographic attacks such as frequency analysis, it remains an important educational tool for learning the basics of cryptography and polyalphabetic ciphers. Furthermore, modern variants based on the same principle are used in computer security systems for less sensitive tasks. The Vigenère cipher beautifully illustrates the evolution of cryptography and its importance in protecting sensitive information across the centuries.</p>
 				</div>
 			</section>
 			<br />
@@ -122,25 +126,25 @@
 				decryptFn={(text, key) => vigenereDecrypt(text, key ?? '')}
 				needsEncryptKey={true}
 				needsDecryptKey={true}
-				encryptKeyLabel="Clé (mot)"
-				decryptKeyLabel="Clé (mot)"
+				encryptKeyLabel="Key (word)"
+				decryptKeyLabel="Key (word)"
 			/>
 		</section>
 	{/if}
 
 	{#if activeTab === 'Fibonaci'}
 		<section class="tabcontent">
-			<h2>La suite de Fibonaci</h2>
-			<h3>Origine</h3>
-			<p>La suite de Fibonacci tire son nom de Leonardo Fibonacci, un mathématicien italien du XIIIᵉ siècle. Elle apparaît dans son ouvrage célèbre, Liber Abaci (1202), où Fibonacci utilise cette suite pour résoudre un problème de reproduction de lapins. Bien que ce mathématicien en soit le vulgarisateur en Occident, des formes similaires de cette suite existaient déjà dans des textes mathématiques indiens plus anciens. La suite est définie de manière simple : chaque nombre est la somme des deux précédents, en commençant par 0 et 1.</p>
+			<h2>The Fibonacci Sequence</h2>
+			<h3>Origin</h3>
+			<p>The Fibonacci sequence takes its name from Leonardo Fibonacci, an Italian mathematician of the 13th century. It appears in his famous work, Liber Abaci (1202), where Fibonacci uses this sequence to solve a problem of rabbit reproduction. Although this mathematician popularised it in the West, similar forms of this sequence already existed in older Indian mathematical texts. The sequence is defined simply: each number is the sum of the two preceding ones, starting with 0 and 1.</p>
 			<section>
 				<div>
-					<h3>Fonctionnement</h3>
-					<p>Chaque nouveau terme résulte de l'addition des deux précédents, ce qui génère une croissance rapide. Cette propriété d'auto-réplication reflète des motifs naturels de croissance, ce qui explique pourquoi cette suite apparaît dans divers contextes biologiques. Mathématiquement, cela s'écrit : F(n)=F(n−1)+F(n−2) avec 𝐹(0) = 0 et 𝐹(1) = 1. Les premiers termes sont donc : 0, 1, 1, 2, 3, 5, 8, 13, 21, 34, …</p>
+					<h3>How It Works</h3>
+					<p>Each new term results from the addition of the two preceding ones, generating rapid growth. This self-replication property mirrors natural growth patterns, which explains why this sequence appears in various biological contexts. Mathematically, this is written: F(n) = F(n−1) + F(n−2), with F(0) = 0 and F(1) = 1. The first terms are: 0, 1, 1, 2, 3, 5, 8, 13, 21, 34, …</p>
 				</div>
 				<div>
-					<h3>Applications Pratiques</h3>
-					<p>La suite de Fibonacci est utilisée dans plusieurs domaines. Nature : On la retrouve dans des phénomènes naturels comme les spirales des coquilles d'escargots, la disposition des graines de tournesol ou des pommes de pin, et la structure des galaxies spirales. Architecture et art : En lien avec le nombre d'or (𝜙), une valeur approximative de 1,618 obtenue par le rapport entre deux termes consécutifs de la suite, elle inspire des proportions harmonieuses dans la peinture, l'architecture et le design. Informatique : Elle est utilisée pour optimiser les algorithmes, comme les recherches dans des arbres binaires ou la compression de données. Finance : Les traders emploient des retracements basés sur le nombre d'or pour prévoir des niveaux de support et de résistance. Modélisation biologique : La suite est utile pour modéliser la croissance des populations, les structures organiques ou même l'ADN. Ici : Sur ce site la suite de Fibonaci est utiliser pour effectuer un chiffrement par décalage avec un décalage unique a chaques lettres.</p>
+					<h3>Practical Applications</h3>
+					<p>The Fibonacci sequence is used in several fields. Nature: It can be found in natural phenomena such as the spirals of snail shells, the arrangement of sunflower seeds or pine cones, and the structure of spiral galaxies. Architecture and art: Linked to the golden ratio (φ), an approximate value of 1.618 obtained by the ratio between two consecutive terms of the sequence, it inspires harmonious proportions in painting, architecture, and design. Computer science: It is used to optimise algorithms, such as searches in binary trees or data compression. Finance: Traders use retracements based on the golden ratio to predict support and resistance levels. Biological modelling: The sequence is useful for modelling population growth, organic structures, or even DNA. Here: On this site, the Fibonacci sequence is used to perform a shift cipher with a unique shift applied to each letter.</p>
 				</div>
 			</section>
 			<br />
@@ -152,17 +156,17 @@
 
 	{#if activeTab === 'Vernam'}
 		<section class="tabcontent">
-			<h2>Le chiffre de Vernam</h2>
-			<h3>Origine</h3>
-			<p>La méthode manuelle du chiffre de Vernam s'inspire des principes proposés par Gilbert Vernam en 1917, adaptés à un usage sans outils électroniques. Ces adaptations sont utilisées dans des situations où les moyens techniques ne sont pas disponibles, ou pour des opérations de cryptographie nécessitant une simplicité apparente et une fiabilité extrême. Le chiffre manuel peut être vu comme une extension des chiffres polyalphabétiques comme celui de Vigenère, mais avec une clé qui n'est ni répétitive ni prévisible.</p>
+			<h2>The Vernam Cipher</h2>
+			<h3>Origin</h3>
+			<p>The manual method of the Vernam cipher is inspired by the principles proposed by Gilbert Vernam in 1917, adapted for use without electronic tools. These adaptations are used in situations where technical means are not available, or for cryptographic operations requiring apparent simplicity and extreme reliability. The manual cipher can be seen as an extension of polyalphabetic ciphers such as Vigenère, but with a key that is neither repetitive nor predictable.</p>
 			<section>
 				<div>
-					<h3>Fonctionnement</h3>
-					<p>Le fonctionnement du chiffre de Vernam manuel repose sur une correspondance entre les lettres de l'alphabet et une clé aléatoire. Pour chiffrer un message, chaque lettre du texte clair est d'abord convertie en un nombre, où A correspond à 0, B à 1, et ainsi de suite jusqu'à Z, qui correspond à 25. La même conversion est effectuée pour les lettres de la clé. Ensuite, on additionne le nombre associé à chaque lettre du message clair avec le nombre correspondant de la clé. Si le résultat dépasse 25, on applique une opération de modulo 26, qui revient à soustraire 26 pour obtenir un résultat compris entre 0 et 25. Le nombre obtenu est alors reconverti en lettre pour former le texte chiffré. Pour déchiffrer, le processus inverse est utilisé. On soustrait le nombre associé à la lettre de la clé de celui de la lettre du message chiffré. Si le résultat est négatif, on ajoute 26 pour rester dans la plage de 0 à 25. Le résultat est ensuite reconverti en lettre pour retrouver le texte original. Ce procédé garantit une correspondance exacte entre les lettres du message clair et celles du message chiffré grâce à l'utilisation exclusive de la clé aléatoire.</p>
+					<h3>How It Works</h3>
+					<p>The functioning of the manual Vernam cipher relies on a correspondence between the letters of the alphabet and a random key. To encrypt a message, each letter of the plaintext is first converted to a number, where A corresponds to 0, B to 1, and so on up to Z, which corresponds to 25. The same conversion is performed for the letters of the key. Each number associated with a letter of the plaintext is then added to the corresponding number of the key. If the result exceeds 25, a modulo 26 operation is applied, which amounts to subtracting 26 to obtain a result between 0 and 25. The resulting number is then converted back to a letter to form the ciphertext. To decrypt, the reverse process is used. The number associated with the key letter is subtracted from the ciphertext letter's number. If the result is negative, 26 is added to stay within the 0–25 range. The result is then converted back to a letter to recover the original text. This process guarantees an exact correspondence between the letters of the plaintext and those of the ciphertext through the exclusive use of the random key.</p>
 				</div>
 				<div>
-					<h3>Applications Pratiques</h3>
-					<p>La méthode manuelle du chiffre de Vernam a été utilisée dans des situations où des moyens électroniques ne sont pas disponibles ou pratiques. Parmi ses usages notables : Communication militaire ou diplomatique, surtout dans des contextes où les dispositifs électroniques ne sont pas fiables ou détectables. Opérations clandestines, où la simplicité des outils (papier, crayon, table d'alphabet) permet de chiffrer sans attirer l'attention. Cette méthode est encore enseignée comme un exemple fondamental des bases de la cryptographie et est utilisée dans des jeux éducatifs ou pour sensibiliser aux principes de sécurité des données.</p>
+					<h3>Practical Applications</h3>
+					<p>The manual method of the Vernam cipher has been used in situations where electronic means are not available or practical. Among its notable uses: military or diplomatic communication, especially in contexts where electronic devices are unreliable or detectable; clandestine operations, where the simplicity of tools (paper, pencil, alphabet table) allows encryption without drawing attention. This method is still taught as a fundamental example of the basics of cryptography and is used in educational games or to raise awareness of data security principles.</p>
 				</div>
 			</section>
 			<br />
@@ -172,7 +176,7 @@
 				encryptFn={vernamEncrypt}
 				decryptFn={(text, key) => vernamDecrypt(text, key ?? '')}
 				needsDecryptKey={true}
-				decryptKeyLabel="Clé secrète (Base64)"
+				decryptKeyLabel="Secret Key (Base64)"
 				showGeneratedKey={true}
 			/>
 		</section>
@@ -180,23 +184,76 @@
 
 	{#if activeTab === 'Binaire'}
 		<section class="tabcontent">
-			<h2>Le système Binaire</h2>
-			<h3>Origine</h3>
-			<p>Le système binaire est un système de numération basé sur deux chiffres seulement : 0 et 1. Contrairement au système décimal, qui utilise dix chiffres (de 0 à 9), le système binaire est particulièrement adapté aux machines, car il repose sur des états simples, tels que "on/off" ou "vrai/faux". Ce système est à la base du fonctionnement des ordinateurs modernes et de nombreux appareils électroniques.</p>
+			<h2>The Binary System</h2>
+			<h3>Origin</h3>
+			<p>The binary system is a numeral system based on only two digits: 0 and 1. Unlike the decimal system, which uses ten digits (from 0 to 9), the binary system is particularly well suited to machines, as it relies on simple states, such as "on/off" or "true/false". This system underpins the operation of modern computers and many electronic devices.</p>
 			<section>
 				<div>
-					<h3>Fonctionnement</h3>
-					<p>Le système binaire fonctionne en positionnant les chiffres 0 et 1 dans des colonnes correspondant à des puissances successives de 2, en commençant par 2⁰ à droite. Chaque position ou "bit" représente une valeur spécifique, et le nombre total est obtenu en additionnant ces valeurs. Par exemple, le nombre binaire 1011 équivaut à 1 * 2³ + 0 * 2² + 1 * 2¹ + 1 * 2⁰ = 11 en décimal. Les opérations mathématiques telles que l'addition, la soustraction, la multiplication et la division peuvent également être effectuées en binaire, bien que leur application soit différente du système décimal. Dans le contexte informatique, chaque "bit" (binary digit) représente un état. Une série de bits peut coder des nombres, des caractères ou des instructions, permettant ainsi de stocker et de traiter des informations.</p>
+					<h3>How It Works</h3>
+					<p>The binary system works by positioning the digits 0 and 1 in columns corresponding to successive powers of 2, starting with 2⁰ on the right. Each position or "bit" represents a specific value, and the total number is obtained by summing these values. For example, the binary number 1011 equals 1×2³ + 0×2² + 1×2¹ + 1×2⁰ = 11 in decimal. Mathematical operations such as addition, subtraction, multiplication, and division can also be performed in binary, though their application differs from the decimal system. In computing, each "bit" (binary digit) represents a state. A series of bits can encode numbers, characters, or instructions, enabling information to be stored and processed.</p>
 				</div>
 				<div>
-					<h3>Applications Pratiques</h3>
-					<p>Le système binaire est fondamental pour le fonctionnement des technologies numériques. Voici ses principales applications, Informatique : Les ordinateurs utilisent des transistors pour représenter les bits sous forme de signaux électriques (0 pour "off", 1 pour "on"). Cela permet aux machines d'effectuer des calculs, de stocker des données et d'exécuter des programmes. Communications : Les réseaux, y compris l'internet, transmettent des données en binaire sous forme de signaux numériques. Électronique : De nombreux appareils électroniques (smartphones, calculatrices, télévisions) utilisent le binaire pour traiter des informations et contrôler leurs fonctions. Cryptographie : Les algorithmes de cryptage reposent souvent sur des opérations en binaire pour assurer la sécurité des communications. Grâce à sa simplicité et son efficacité, le système binaire est devenu la pierre angulaire des technologies modernes, jouant un rôle crucial dans le traitement et la transmission de l'information.</p>
+					<h3>Practical Applications</h3>
+					<p>The binary system is fundamental to the operation of digital technologies. Its main applications include: Computing — computers use transistors to represent bits as electrical signals (0 for "off", 1 for "on"), enabling machines to perform calculations, store data, and execute programs. Communications — networks, including the internet, transmit data in binary as digital signals. Electronics — many electronic devices (smartphones, calculators, televisions) use binary to process information and control their functions. Cryptography — encryption algorithms often rely on binary operations to ensure the security of communications. Thanks to its simplicity and efficiency, the binary system has become the cornerstone of modern technologies, playing a crucial role in the processing and transmission of information.</p>
 				</div>
 			</section>
 			<br />
 			<hr />
 			<br />
 			<CipherForm encryptFn={binaryEncrypt} decryptFn={binaryDecrypt} />
+		</section>
+	{/if}
+
+	{#if activeTab === 'RailFence'}
+		<section class="tabcontent">
+			<h2>Rail Fence Cipher</h2>
+			<h3>Origin</h3>
+			<p>The Rail Fence cipher is one of the oldest known transposition ciphers. Unlike all other ciphers on this site, which replace each letter with a different symbol (substitution), the Rail Fence cipher keeps every letter unchanged but scrambles their order. Its exact origin is uncertain — it was in use in ancient Greece and Rome — and it saw renewed popularity during the American Civil War for quick field communications. The name evokes the visual appearance of the zigzag pattern, which resembles the alternating rails and posts of a wooden fence.</p>
+			<section>
+				<div>
+					<h3>How It Works</h3>
+					<p>To encrypt, write the plaintext diagonally downward across N rails, bouncing back up when you hit the bottom rail, until every letter is placed. Read each rail left-to-right and concatenate to get the ciphertext. To decrypt, replay the same zigzag on blank positions to find out how many characters belong to each rail, slice the ciphertext into those segments, then read them off in zigzag order. The key is simply the number of rails. Example with 3 rails and "HELLOWORLD": rail 0 → H,O,L — rail 1 → E,L,W,R,D — rail 2 → L,O. Ciphertext: HOLELWRDLO.</p>
+				</div>
+				<div>
+					<h3>Practical Applications</h3>
+					<p>The Rail Fence cipher was used in military and espionage contexts as a fast, equipment-free way to obscure a message. Both Union and Confederate forces used transposition ciphers of this family for tactical dispatches during the American Civil War. Today it has no practical security value — it can be broken by hand in seconds — but it remains an essential teaching tool: it illustrates transposition (scrambling positions) as opposed to substitution (replacing letters), which is the foundation for understanding more complex systems like columnar transposition and the Enigma machine. It also builds intuition for the permutation layer found in modern block ciphers such as AES.</p>
+				</div>
+			</section>
+			<br />
+			<hr />
+			<br />
+			<CipherForm
+				encryptFn={(text, key) => railFenceEncrypt(text, parseInt(key ?? '3'))}
+				decryptFn={(text, key) => railFenceDecrypt(text, parseInt(key ?? '3'))}
+				needsEncryptKey={true}
+				needsDecryptKey={true}
+				encryptKeyLabel="Number of rails"
+				decryptKeyLabel="Number of rails"
+				encryptKeyType="number"
+				decryptKeyType="number"
+			/>
+		</section>
+	{/if}
+
+	{#if activeTab === 'Pigpen'}
+		<section class="tabcontent">
+			<h2>Pigpen Cipher</h2>
+			<h3>Origin</h3>
+			<p>The Pigpen cipher (also called the Masonic cipher or Freemason cipher) is a geometric substitution cipher dating to at least the 18th century. It was widely used by Freemasons to keep their correspondence private, and later appeared in the American Civil War. Each letter of the alphabet is represented by a portion of a grid or X shape, making the ciphertext look like a series of abstract symbols rather than any recognisable script.</p>
+			<section>
+				<div>
+					<h3>How It Works</h3>
+					<p>The 26 letters are split across two systems. Letters A–I occupy cells in a 3×3 tic-tac-toe grid: each letter's symbol shows only the lines that surround its cell (corner, edge, or center). Letters J–R use the same grid, but with a dot added inside the symbol. Letters S–V occupy four quadrant positions around an X shape (two diagonal lines meeting at center), and W–Z repeat those quadrants with a dot. To decrypt, identify which grid or X a symbol belongs to, note its position, and look up the letter. The reference chart below serves as your decode key.</p>
+				</div>
+				<div>
+					<h3>Practical Applications</h3>
+					<p>The Pigpen cipher has no modern cryptographic value — its small key space and fixed visual alphabet make it trivial to crack — but it remains culturally significant. It appears in treasure hunt puzzles, escape rooms, Freemasonic documents, and works of fiction such as Arthur Conan Doyle's "The Adventure of the Dancing Men." It is an excellent introduction to the idea that symbols do not have to look like letters to carry linguistic meaning, and to the concept of a fixed-substitution key (the grid layout), which is the philosophical ancestor of codebooks and lookup tables used in modern cryptographic key exchange.</p>
+				</div>
+			</section>
+			<br />
+			<hr />
+			<br />
+			<PigpenForm />
 		</section>
 	{/if}
 </main>

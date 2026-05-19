@@ -18,8 +18,8 @@
 		decryptFn,
 		needsEncryptKey = false,
 		needsDecryptKey = false,
-		encryptKeyLabel = 'Clé',
-		decryptKeyLabel = 'Clé',
+		encryptKeyLabel = 'Key',
+		decryptKeyLabel = 'Key',
 		encryptKeyType = 'text',
 		decryptKeyType = 'text',
 		showGeneratedKey = false
@@ -48,7 +48,7 @@
 				generatedKey = result.key;
 			}
 		} catch (e) {
-			encryptError = e instanceof Error ? e.message : 'Erreur inconnue';
+			encryptError = e instanceof Error ? e.message : 'Unknown error';
 		}
 	}
 
@@ -57,7 +57,7 @@
 		try {
 			decryptOutput = decryptFn(decryptInput, decryptKey || undefined);
 		} catch (e) {
-			decryptError = e instanceof Error ? e.message : 'Erreur inconnue';
+			decryptError = e instanceof Error ? e.message : 'Unknown error';
 		}
 	}
 </script>
@@ -65,7 +65,7 @@
 <section class="cryptage">
 	<section>
 		<div>
-			<label for="encryptInput">Ecrit ton message ici :</label>
+			<label for="encryptInput">Enter your message:</label>
 			{#if needsEncryptKey}
 				<input
 					class="key-input"
@@ -74,14 +74,14 @@
 					bind:value={encryptKey}
 				/>
 			{/if}
-			<textarea id="encryptInput" placeholder="Ton message" bind:value={encryptInput}></textarea>
+			<textarea id="encryptInput" placeholder="Your message" bind:value={encryptInput}></textarea>
 		</div>
 		<div>
-			<p>Ton message encrypter :</p>
-			<textarea placeholder="Résultat encrypter" disabled value={encryptOutput}></textarea>
+			<p>Your encrypted message:</p>
+			<textarea placeholder="Encrypted result" disabled value={encryptOutput}></textarea>
 			{#if showGeneratedKey && generatedKey}
 				<p class="generated-key">
-					Clé secrète (usage unique) :
+					Secret key (one-time use):
 					<code>{generatedKey}</code>
 				</p>
 			{/if}
@@ -90,7 +90,7 @@
 	{#if encryptError}
 		<p class="error-msg">{encryptError}</p>
 	{/if}
-	<button onclick={handleEncrypt}>Encrypter</button>
+	<button onclick={handleEncrypt}>Encrypt</button>
 </section>
 
 <br />
@@ -100,7 +100,7 @@
 <section class="decryptage">
 	<section>
 		<div>
-			<label for="decryptInput">Ecrit ton message secret ici :</label>
+			<label for="decryptInput">Enter your encrypted message:</label>
 			{#if needsDecryptKey}
 				<input
 					class="key-input"
@@ -109,15 +109,15 @@
 					bind:value={decryptKey}
 				/>
 			{/if}
-			<textarea id="decryptInput" placeholder="Ton message encrypter" bind:value={decryptInput}></textarea>
+			<textarea id="decryptInput" placeholder="Your encrypted message" bind:value={decryptInput}></textarea>
 		</div>
 		<div>
-			<p>Ton message décrypter :</p>
-			<textarea placeholder="Résultat décrypter" disabled value={decryptOutput}></textarea>
+			<p>Your decrypted message:</p>
+			<textarea placeholder="Decrypted result" disabled value={decryptOutput}></textarea>
 		</div>
 	</section>
 	{#if decryptError}
 		<p class="error-msg">{decryptError}</p>
 	{/if}
-	<button onclick={handleDecrypt}>Décrypter</button>
+	<button onclick={handleDecrypt}>Decrypt</button>
 </section>
