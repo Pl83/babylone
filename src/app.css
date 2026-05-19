@@ -1,0 +1,403 @@
+/* ── Variables ──────────────────────────────────────────────────────── */
+:root {
+    --bg:          #0d1117;
+    --surface:     #161b22;
+    --surface-2:   #1c2128;
+    --border:      #33ff33;
+    --text:        #33ff33;
+    --text-dim:    #1a7a1a;
+    --accent:      #ffd700;
+    --accent-glow: rgba(255, 215, 0, 0.4);
+    --text-glow:   rgba(51, 255, 51, 0.5);
+    --error:       #ff4444;
+    --error-bg:    #1a0000;
+}
+
+/* ── Reset ──────────────────────────────────────────────────────────── */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* ── Base ───────────────────────────────────────────────────────────── */
+body {
+    background-color: var(--bg);
+    color: var(--text);
+    font-family: 'JetBrains Mono', 'Courier New', monospace;
+    font-size: 0.95rem;
+    overflow-x: hidden;
+    min-height: 100vh;
+}
+
+/* CRT scanlines overlay */
+body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(
+        0deg,
+        rgba(0, 0, 0, 0.12) 0px,
+        rgba(0, 0, 0, 0.12) 1px,
+        transparent 1px,
+        transparent 3px
+    );
+    pointer-events: none;
+    z-index: 9999;
+}
+
+/* ── Animations ─────────────────────────────────────────────────────── */
+@keyframes cursor-blink {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0; }
+}
+
+/* ── Header ─────────────────────────────────────────────────────────── */
+header {
+    width: 100%;
+    padding: 16px 50px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    box-shadow: 0 0 12px var(--text-glow);
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+header h1 {
+    font-family: 'VT323', monospace;
+    font-size: 3rem;
+    color: var(--text);
+    text-shadow: 0 0 10px var(--border), 0 0 22px var(--text-glow);
+    letter-spacing: 3px;
+}
+
+header h1::after {
+    content: '█';
+    font-size: 2.2rem;
+    margin-left: 4px;
+    animation: cursor-blink 1s step-end infinite;
+}
+
+header p {
+    font-family: 'VT323', monospace;
+    font-size: 1.6rem;
+    color: var(--accent);
+    text-shadow: 0 0 8px var(--accent-glow);
+    letter-spacing: 1px;
+}
+
+/* ── Main ───────────────────────────────────────────────────────────── */
+main {
+    margin-top: 50px;
+    margin-left: 80px;
+    margin-right: 80px;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    padding-bottom: 60px;
+}
+
+main > h2 {
+    font-family: 'VT323', monospace;
+    font-size: 1.8rem;
+    color: var(--accent);
+    text-shadow: 0 0 6px var(--accent-glow);
+    letter-spacing: 2px;
+}
+
+main > h2::before { content: '[ '; }
+main > h2::after  { content: ' ]'; }
+
+main > p {
+    color: var(--text-dim);
+    line-height: 1.75;
+    font-size: 0.9rem;
+}
+
+/* ── Tabs ───────────────────────────────────────────────────────────── */
+main .tab {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 8px;
+    border-bottom: 1px solid var(--text-dim);
+    padding-bottom: 12px;
+}
+
+main .tab .tablinks {
+    font-family: 'VT323', monospace;
+    font-size: 1.3rem;
+    letter-spacing: 1px;
+    padding: 5px 16px;
+    background: transparent;
+    border: 1px solid var(--text-dim);
+    color: var(--text-dim);
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+main .tab .tablinks::before {
+    content: '> ';
+}
+
+main .tab .tablinks:hover {
+    border-color: var(--border);
+    color: var(--text);
+    text-shadow: 0 0 6px var(--text-glow);
+    box-shadow: 0 0 6px rgba(51, 255, 51, 0.25);
+}
+
+main .tab .active {
+    border-color: var(--accent);
+    color: var(--accent);
+    text-shadow: 0 0 8px var(--accent-glow);
+    box-shadow: 0 0 8px var(--accent-glow);
+    background: rgba(255, 215, 0, 0.04);
+}
+
+main .tab .active::before {
+    content: '>> ';
+}
+
+/* ── Tab content headings ───────────────────────────────────────────── */
+main .tabcontent h2 {
+    font-family: 'VT323', monospace;
+    font-size: 2rem;
+    color: var(--accent);
+    text-shadow: 0 0 8px var(--accent-glow);
+    letter-spacing: 2px;
+    margin-bottom: 20px;
+}
+
+main .tabcontent h2::before { content: '[ '; }
+main .tabcontent h2::after  { content: ' ]'; }
+
+main .tabcontent h3 {
+    font-family: 'VT323', monospace;
+    font-size: 1.4rem;
+    color: var(--text);
+    text-shadow: 0 0 5px var(--text-glow);
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+}
+
+main .tabcontent h3::before {
+    content: '// ';
+    color: var(--text-dim);
+}
+
+main .tabcontent p {
+    color: var(--text-dim);
+    font-size: 0.88rem;
+    line-height: 1.75;
+    margin-bottom: 20px;
+}
+
+/* ── Two-column info section ────────────────────────────────────────── */
+main .tabcontent > section {
+    display: flex;
+    flex-direction: row;
+    gap: 5%;
+}
+
+main .tabcontent > section > div {
+    width: 47.5%;
+}
+
+/* ── HR ─────────────────────────────────────────────────────────────── */
+hr {
+    border: none;
+    border-top: 1px solid var(--text-dim);
+    opacity: 0.35;
+}
+
+/* ── Cryptage / Décryptage blocks ───────────────────────────────────── */
+main .tabcontent .cryptage,
+main .tabcontent .decryptage {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    background: var(--surface);
+    border: 1px solid var(--text-dim);
+}
+
+main .tabcontent .cryptage section,
+main .tabcontent .decryptage section {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    gap: 5%;
+    justify-content: center;
+}
+
+main .tabcontent .cryptage section div,
+main .tabcontent .decryptage section div {
+    display: flex;
+    flex-direction: column;
+    width: 45%;
+}
+
+main .tabcontent .cryptage section div:nth-of-type(1) label,
+main .tabcontent .decryptage section div:nth-of-type(1) label {
+    margin-bottom: 10px;
+    font-size: 0.82rem;
+    color: var(--text-dim);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+main .tabcontent .cryptage section div:nth-of-type(1) label::before,
+main .tabcontent .decryptage section div:nth-of-type(1) label::before {
+    content: '$ ';
+    color: var(--accent);
+}
+
+main .tabcontent .cryptage section div p,
+main .tabcontent .decryptage section div p {
+    margin-bottom: 8px;
+    font-size: 0.82rem;
+    color: var(--text-dim);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+main .tabcontent .cryptage section div p::before,
+main .tabcontent .decryptage section div p::before {
+    content: '< ';
+    color: var(--accent);
+}
+
+/* ── Textareas ──────────────────────────────────────────────────────── */
+main .tabcontent .cryptage section div textarea,
+main .tabcontent .decryptage section div textarea {
+    min-height: 110px;
+    padding: 10px;
+    background: var(--surface-2);
+    color: var(--text);
+    border: 1px solid var(--text-dim);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.88rem;
+    resize: vertical;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+main .tabcontent .cryptage section div textarea:focus,
+main .tabcontent .decryptage section div textarea:focus {
+    border-color: var(--border);
+    box-shadow: 0 0 8px rgba(51, 255, 51, 0.25);
+}
+
+main .tabcontent .cryptage section div textarea:disabled,
+main .tabcontent .decryptage section div textarea:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+}
+
+main .tabcontent .cryptage section div textarea::placeholder,
+main .tabcontent .decryptage section div textarea::placeholder {
+    color: var(--text-dim);
+    opacity: 0.5;
+}
+
+/* ── Buttons ────────────────────────────────────────────────────────── */
+main .tabcontent .cryptage button,
+main .tabcontent .decryptage button {
+    margin-top: 16px;
+    margin-bottom: 4px;
+    padding: 7px 24px;
+    font-family: 'VT323', monospace;
+    font-size: 1.3rem;
+    letter-spacing: 2px;
+    background: transparent;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    cursor: pointer;
+    transition: all 0.15s ease;
+    text-shadow: 0 0 6px var(--accent-glow);
+}
+
+main .tabcontent .cryptage button::before,
+main .tabcontent .decryptage button::before {
+    content: '▶ ';
+}
+
+main .tabcontent .cryptage button:hover,
+main .tabcontent .decryptage button:hover {
+    background: var(--accent);
+    color: var(--bg);
+    box-shadow: 0 0 14px var(--accent-glow);
+    text-shadow: none;
+}
+
+/* ── Key inputs ─────────────────────────────────────────────────────── */
+.key-input {
+    margin-bottom: 10px;
+    padding: 7px 10px;
+    background: var(--surface-2);
+    border: 1px solid var(--text-dim);
+    color: var(--text);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.88rem;
+    width: 100%;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.key-input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 6px var(--accent-glow);
+}
+
+.key-input::placeholder {
+    color: var(--text-dim);
+    opacity: 0.5;
+}
+
+/* ── Error ──────────────────────────────────────────────────────────── */
+.error-msg {
+    margin-top: 8px;
+    padding: 6px 10px;
+    color: var(--error);
+    background: var(--error-bg);
+    border: 1px solid var(--error);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.82rem;
+    width: 100%;
+    text-align: center;
+}
+
+.error-msg::before {
+    content: '[ERROR] ';
+    font-weight: 700;
+}
+
+/* ── Generated key (Vernam) ─────────────────────────────────────────── */
+.generated-key {
+    margin-top: 12px;
+    padding: 10px 12px;
+    background: rgba(255, 215, 0, 0.05);
+    border: 1px solid var(--accent);
+    box-shadow: 0 0 8px var(--accent-glow);
+    font-size: 0.82rem;
+    color: var(--accent);
+    word-break: break-all;
+}
+
+.generated-key::before {
+    content: '[KEY] ';
+    font-weight: 700;
+}
+
+.generated-key code {
+    display: block;
+    margin-top: 6px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--accent);
+    opacity: 0.85;
+}
