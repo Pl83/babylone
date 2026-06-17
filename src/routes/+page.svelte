@@ -8,6 +8,7 @@
 	import { encrypt as binaryEncrypt, decrypt as binaryDecrypt } from '$lib/ciphers/binary';
 	import { encrypt as railFenceEncrypt, decrypt as railFenceDecrypt } from '$lib/ciphers/railfence';
 	import PigpenForm from '$lib/components/PigpenForm.svelte';
+	import SeedPhraseForm from '$lib/components/SeedPhraseForm.svelte';
 
 	const tabs = [
 		{ id: 'Morse', label: 'Morse' },
@@ -17,7 +18,8 @@
 		{ id: 'Vernam', label: 'Vernam' },
 		{ id: 'Binaire', label: 'Binary' },
 		{ id: 'RailFence', label: 'Rail Fence' },
-		{ id: 'Pigpen', label: 'Pigpen' }
+		{ id: 'Pigpen', label: 'Pigpen' },
+		{ id: 'Bip39', label: 'BIP39' }
 	];
 
 	let activeTab = $state('Morse');
@@ -254,6 +256,27 @@
 			<hr />
 			<br />
 			<PigpenForm />
+		</section>
+	{/if}
+	{#if activeTab === 'Bip39'}
+		<section class="tabcontent">
+			<h2>BIP39 Seed Phrases</h2>
+			<h3>Origin</h3>
+			<p>BIP39 — Bitcoin Improvement Proposal 39, published in 2013 — is the standard that turns a wallet's secret into a list of ordinary words. Before it, backing up a wallet meant copying long strings of hexadecimal; a single mistyped character meant lost funds. BIP39 replaced that with a human-readable mnemonic drawn from a fixed list of 2048 words, and it has since become near-universal across cryptocurrency wallets, hardware and software alike.</p>
+			<section>
+				<div>
+					<h3>How It Works</h3>
+					<p>A wallet starts from random entropy — 128 bits for a 12-word phrase, 256 bits for 24 words. A checksum is appended: the first few bits of the SHA-256 hash of that entropy (4 bits for 128, 8 for 256). The combined bit string is sliced into groups of 11 bits, and each 11-bit group (a number from 0 to 2047) selects one word from the list. The process is reversible: from the words you recover the indices, the bits, and the original entropy — and the checksum lets you detect a mistyped or invalid phrase. Finally, the phrase is stretched through PBKDF2-HMAC-SHA512 (2048 iterations, with an optional passphrase) into a 512-bit master seed, from which all the wallet's keys are derived.</p>
+				</div>
+				<div>
+					<h3>Practical Applications</h3>
+					<p>The seed phrase is the human-readable bridge between a person and a binary master seed: write down twelve words on paper and you can restore an entire wallet on any compatible device, anywhere. Its checksum guards against transcription errors, and its standardised wordlist makes phrases portable between vendors. The optional passphrase adds a "25th word" known only to the owner, creating a hidden wallet. Below you can generate real, checksum-valid phrases, inspect the entropy-to-word mapping that powers them, and validate or decode an existing phrase. Treat it as a learning tool only — never as a place to keep real money.</p>
+				</div>
+			</section>
+			<br />
+			<hr />
+			<br />
+			<SeedPhraseForm />
 		</section>
 	{/if}
 </main>
